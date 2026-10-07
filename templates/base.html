@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Intelligent Phishing & URL Classifier{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='pages.css') }}">
+</head>
+<body>
+<div class="dashboard {% block card_class %}{% endblock %}">
+    {% include '_menu.html' %}
+
+    {% if request.endpoint != 'index' %}
+    <a class="back-link" href="{{ url_for('index') }}">← Back to Home</a>
+    {% endif %}
+
+    {% block content %}{% endblock %}
+
+    {% if prev_page or next_page %}
+    <nav class="pager" aria-label="Page navigation">
+        {% if prev_page %}<a href="{{ url_for(prev_page.endpoint) }}">← {{ prev_page.label }}</a>{% else %}<span></span>{% endif %}
+        {% if next_page %}<a href="{{ url_for(next_page.endpoint) }}">{{ next_page.label }} →</a>{% endif %}
+    </nav>
+    {% endif %}
+</div>
+
+<script src="{{ url_for('static', filename='menu.js') }}"></script>
+<script src="{{ url_for('static', filename='scan_history.js') }}"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

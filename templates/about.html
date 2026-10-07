@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}About Me | Phishing & URL Classifier{% endblock %}
+{% block card_class %}wide{% endblock %}
+{% block content %}
+<h2 class="page-title">About Me</h2>
+<p class="page-lead">Hi, I'm Nur Tarikul Islam. I built this Tri-Vector Security Scanner as my final year project to explore how cybersecurity, machine learning and automation can work together to protect everyday users.</p>
+
+<div class="info-card">
+    <h3>What I wanted to learn</h3>
+    <p>I wanted to go beyond theory and build something that actually runs: train a model on real phishing data, wrap it in a web app, and connect it to outside services such as the Have I Been Pwned database. This project is where those pieces came together.</p>
+</div>
+
+<h3 class="section-title">Tools I used</h3>
+<ul class="tag-list">
+    <li>Python</li><li>Flask</li><li>scikit-learn</li><li>Random Forest</li>
+    <li>OpenCV</li><li>Pillow</li><li>zxcvbn</li><li>HTML / CSS</li><li>JavaScript</li>
+</ul>
+
+<h3 class="section-title">What I built</h3>
+<div class="card-grid">
+    <div class="info-card"><h3>URL Scanner</h3><p>A machine learning model that rates a link as phishing or safe.</p></div>
+    <div class="info-card"><h3>Quishing Detector</h3><p>Reads a QR code from an image and checks the link inside it.</p></div>
+    <div class="info-card"><h3>Password Checker</h3><p>Scores password strength and checks it against known breaches.</p></div>
+</div>
+
+<main class="profile" aria-label="Student, supervisor, and university profile">
+    <section class="profile-card student" aria-labelledby="student-heading">
+        <h2 id="student-heading">Student</h2>
+        <dl>
+            <dt>Name</dt>
+            <dd>Nur Tarikul Islam</dd>
+            <dt>Student ID</dt>
+            <dd>22258202125</dd>
+            <dt>Department</dt>
+            <dd>Computer Science &amp; Engineering</dd>
+            <dt>Program</dt>
+            <dd>BSc in CSE</dd>
+            <dt>Phone</dt>
+            <dd><a href="tel:+8801964712463">+8801964712463</a></dd>
+            <dt>Email</dt>
+            <dd><a href="mailto:nurtarikulislam@gmail.com">nurtarikulislam@gmail.com</a></dd>
+            <dt>GitHub</dt>
+            <dd><a href="https://github.com/unknownowl007" target="_blank" rel="noopener noreferrer">github.com/unknownowl007</a></dd>
+            <dt>LinkedIn</dt>
+            <dd><a href="https://www.linkedin.com/in/nur-tarikul-islam-10527317b/" target="_blank" rel="noopener noreferrer">linkedin.com/in/nur-tarikul-islam-10527317b/</a></dd>
+            <dt>developer Profile</dt>
+            <dd><a href="https://play.google.com/store/apps/dev?id=5584881827106635585">Our Apps</a> </dd>
+        </dl>
+    </section>
+
+    <section class="profile-card supervisor" aria-labelledby="supervisor-heading">
+        <h2 id="supervisor-heading">Supervisor</h2>
+        <dl>
+            <dt>Name</dt>
+            <dd>Md. Masud Reza</dd>
+            <dt>Designation</dt>
+            <dd>Dean, Faculty of Applied Science</dd>
+            <dt>University</dt>
+            <dd>The People's University of Bangladesh</dd>
+            <dt>Email</dt>
+            <dd><a href="mailto:reza10@pub.ac.bd">reza10@pub.ac.bd</a></dd>
+            <dt>Phone</dt>
+            <dd><a href="tel:+8801818608503">+880 1818-608503</a></dd>
+            <dt>Office</dt>
+            <dd>Faculty of Applied Science, PUB, Mohammadpur, Dhaka-1207</dd>
+        </dl>
+    </section>
+
+    <section class="profile-card university" aria-labelledby="university-heading">
+        <h2 id="university-heading">The People's University of Bangladesh</h2>
+        <address>
+            3/2, Block-A Asad Avenue, Mohammadpur, Dhaka-1207<br>
+            <a href="tel:+88029117454">+880 2 9117454</a> /
+            <a href="tel:+88029127807">+880 2 9127807</a><br>
+            <a href="mailto:thepeoplesuniversity@yahoo.com">thepeoplesuniversity@yahoo.com</a><br>
+            <a href="https://www.pub.ac.bd" target="_blank" rel="noopener noreferrer">www.pub.ac.bd</a>
+        </address>
+    </section>
+</main>
+{% endblock %}

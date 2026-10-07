@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Why This Project | Phishing & URL Classifier{% endblock %}
+{% block card_class %}wide{% endblock %}
+{% block content %}
+<h2 class="page-title">Why This Project</h2>
+<p class="page-lead">Attackers no longer rely only on suspicious emails. They hide links in QR codes, copy trusted brands, and reuse passwords leaked from older breaches. This project puts one check for each of those problems in one place.</p>
+
+<h3 class="section-title">The problems it targets</h3>
+<div class="card-grid">
+    <div class="info-card">
+        <h3>Phishing links</h3>
+        <p>Fake login pages are built to look like banks, shops and social networks. A link can look harmless until you read it closely.</p>
+    </div>
+    <div class="info-card">
+        <h3>Quishing</h3>
+        <p>A QR code hides its destination. People scan posters, flyers and emails without seeing where they lead.</p>
+    </div>
+    <div class="info-card">
+        <h3>Weak or leaked passwords</h3>
+        <p>Many accounts are taken over with passwords that are short, predictable, or already exposed in a breach.</p>
+    </div>
+</div>
+
+<h3 class="section-title">What the project aims to do</h3>
+<div class="info-card">
+    <ul>
+        <li>Give anyone a fast answer about a link, with a confidence score.</li>
+        <li>Let people check a QR code before they open what is inside it.</li>
+        <li>Explain why a password is weak and how to improve it.</li>
+        <li>Keep it simple enough that no technical knowledge is needed.</li>
+    </ul>
+</div>
+
+<h3 class="section-title">Who it is for</h3>
+<p class="page-lead">Students, small business owners, and family members who are not security experts but use links, QR codes and passwords every day.</p>
+{% endblock %}

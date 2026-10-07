@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Scan History | Phishing & URL Classifier{% endblock %}
+{% block card_class %}wide{% endblock %}
+{% block content %}
+<div class="history-header">
+    <div>
+        <h2 class="page-title">Scan History</h2>
+        <p class="page-lead">Recent URL, QR, and domain checks saved in this browser only.</p>
+    </div>
+    <button class="history-clear-btn" id="clear-history-btn" type="button">Clear history</button>
+</div>
+<p class="history-message" id="history-message" role="status"></p>
+<p class="history-empty" id="history-empty" hidden>No saved checks yet. Results from successful URL, QR, SSL, and WHOIS/RDAP checks will appear here.</p>
+<ol class="history-list" id="history-list" aria-label="Recent scans"></ol>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Limitations | Phishing & URL Classifier{% endblock %}
+{% block card_class %}wide{% endblock %}
+{% block content %}
+<h2 class="page-title">Limitations</h2>
+<p class="page-lead">No detector is perfect. Knowing where this one can be wrong helps you use it sensibly.</p>
+
+<h3 class="section-title">URL Scanner</h3>
+<div class="card-grid">
+    <div class="info-card"><h3>Looks at text only</h3><p>It judges the shape of the link, not the page behind it. It never opens the site or checks what it contains.</p></div>
+    <div class="info-card"><h3>New attacks can slip through</h3><p>A brand-new phishing site with a clean-looking link can be marked safe. Safe legitimate links with odd structure can be flagged by mistake.</p></div>
+    <div class="info-card"><h3>Depends on its training data</h3><p>The model is only as good as the examples it learned from, and phishing styles change over time.</p></div>
+</div>
+
+<h3 class="section-title">Quishing Detector</h3>
+<div class="card-grid">
+    <div class="info-card"><h3>Needs a clear image</h3><p>Blurry, cropped, tilted or low-contrast photos may not decode.</p></div>
+    <div class="info-card"><h3>Only links are checked</h3><p>If a QR code contains plain text, a contact card or Wi-Fi details, there is no link to scan.</p></div>
+</div>
+
+<h3 class="section-title">Password Checker</h3>
+<div class="card-grid">
+    <div class="info-card"><h3>Needs internet access</h3><p>The breach lookup calls an outside service. If it is unreachable, the result shows no leaks even though none were actually checked.</p></div>
+    <div class="info-card"><h3>"Not found" is not "safe"</h3><p>A password missing from known breaches can still be weak or guessable.</p></div>
+</div>
+
+<div class="note">Use this tool as a second opinion. When a link or message feels wrong, go to the official website directly instead of clicking.</div>
+{% endblock %}

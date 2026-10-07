@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Intelligent Phishing & URL Classifier</h1>
+
+<div id="main-scanner-view">
+    <div class="tabs" role="tablist" aria-label="Security tools">
+        <button class="tab-btn active" id="url-tab-button" role="tab" aria-selected="true" aria-controls="url-tab" tabindex="0" data-target="url-tab">URL Scanner</button>
+        <button class="tab-btn" id="qr-tab-button" role="tab" aria-selected="false" aria-controls="qr-tab" tabindex="-1" data-target="qr-tab">Quishing</button>
+        <button class="tab-btn" id="pwd-tab-button" role="tab" aria-selected="false" aria-controls="pwd-tab" tabindex="-1" data-target="pwd-tab">Password</button>
+        <button class="tab-btn" id="enhanced-tab-button" role="tab" aria-selected="false" aria-controls="enhanced-tab" tabindex="-1" data-target="enhanced-tab">Enhanced URL</button>
+        <button class="tab-btn" id="domain-tab-button" role="tab" aria-selected="false" aria-controls="domain-tab" tabindex="-1" data-target="domain-tab">Domain</button>
+        <button class="tab-btn" id="speed-tab-button" role="tab" aria-selected="false" aria-controls="speed-tab" tabindex="-1" data-target="speed-tab">Speed</button>
+    </div>
+
+    <div id="url-tab" class="tab-content active" role="tabpanel" aria-labelledby="url-tab-button" tabindex="0" aria-hidden="false">
+        <div class="tab-inner-bg">
+            <p class="tool-description">The AI model decides the verdict. A matching URL from the historical local list is shown only as extra context. Redirect checks contact public sites to read response headers; lookalike checks use a limited built-in brand list.</p>
+            <div class="form-group">
+                <input type="text" id="url-input" aria-label="URL to scan" placeholder="Enter URL (e.g., https://example.com)...">
+            </div>
+            <button class="submit-btn" id="btn-scan-url">Scan Web Link</button>
+            <div class="action-row analysis-actions">
+                <button class="secondary-btn" id="btn-check-redirects">Analyze redirect chain</button>
+                <button class="secondary-btn" id="btn-check-lookalike">Check lookalike domain</button>
+            </div>
+            <div id="url-result" class="result-box" role="status" aria-live="polite" aria-atomic="true"></div>
+            <div id="redirect-result" class="result-box" role="status" aria-live="polite" aria-atomic="true"></div>
+            <div id="lookalike-result" class="result-box" role="status" aria-live="polite" aria-atomic="true"></div>
+        </div>
+    </div>
+
+    <div id="qr-tab" class="tab-content" role="tabpanel" aria-labelledby="qr-tab-button" tabindex="0" aria-hidden="true">
+        <div class="tab-inner-bg">
+            <div class="form-group">
+                <input type="file" id="qr-input" accept="image/*" class="file-input" aria-label="QR code image">
+            </div>
+            <button class="submit-btn" id="btn-scan-qr">Analyze QR Image</button>
+            <div id="qr-result" class="result-box" role="status" aria-live="polite" aria-atomic="true"></div>
+        </div>
+    </div>
+
+    <div id="pwd-tab" class="tab-content" role="tabpanel" aria-labelledby="pwd-tab-button" tabindex="0" aria-hidden="true">
+        <div class="tab-inner-bg">
+            <div class="form-group pwd-wrapper">
+                <input type="password" id="pwd-input" aria-label="Password to evaluate" placeholder="Enter password to evaluate...">
+                <span class="toggle-icon" id="toggle-icon">👁️</span>
+            </div>
+            <button class="submit-btn" id="btn-check-pwd">Evaluate Security</button>
+            <div id="pwd-result" class="result-box" role="status" aria-live="polite" aria-atomic="true"></div>
+        </div>
+    </div>
+
+    <div id="enhanced-tab" class="tab-content" role="tabpanel" aria-labelledby="enhanced-tab-button" tabindex="0" aria-hidden="true">
+        <div class="tab-inner-bg">
+            <p class="tool-description">Use the expanded 35-signal URL model. Your existing scanner remains available in the URL Scanner tab.</p>
+            <div class="form-group">
+                <input type="text" id="enhanced-url-input" aria-label="URL for enhanced scan" placeholder="Enter URL (e.g., https://example.com)...">
+            </div>
+            <button class="submit-btn" id="btn-scan-enhanced">Run enhanced scan</button>
+            <div id="enhanced-url-result" class="result-box" role="status" aria-live="polite" aria-atomic="true"></div>
+        </div>
+    </div>
+
+    <div id="domain-tab" class="tab-content" role="tabpanel" aria-labelledby="domain-tab-button" tabindex="0" aria-hidden="true">
+        <div class="tab-inner-bg">
+            <p class="tool-description">Validate TLS certificates and view public WHOIS/RDAP registration details.</p>
+            <div class="form-group">
+                <input type="text" id="domain-input" aria-label="Domain for certificate or registration lookup" placeholder="Enter a domain (e.g., example.com)...">
+            </div>
+            <div class="action-row">
+                <button class="submit-btn" id="btn-check-ssl">Validate SSL</button>
+                <button class="submit-btn" id="btn-check-whois">WHOIS / RDAP</button>
+            </div>
+            <div id="ssl-result" class="result-box" role="status" aria-live="polite" aria-atomic="true"></div>
+            <div id="whois-result" class="result-box" role="status" aria-live="polite" aria-atomic="true"></div>
+            <section class="ip-lookup-section" aria-labelledby="ip-lookup-heading">
+                <h3 id="ip-lookup-heading">Manual public IP lookup</h3>
+                <p class="tool-description">Enter an IP address to view approximate location and network details. The entered IP is sent to ipwho.is. This does not look up your device automatically.</p>
+                <div class="form-group">
+                    <input type="text" id="ip-lookup-input" aria-label="Public IP address to look up" autocomplete="off" spellcheck="false" placeholder="Enter a public IPv4 or IPv6 address">
+                </div>
+                <button class="submit-btn" id="btn-lookup-ip">Look up IP address</button>
+                <div id="ip-lookup-result" class="result-box" role="status" aria-live="polite" aria-atomic="true"></div>
+            </section>
+        </div>
+    </div>
+
+    <div id="speed-tab" class="tab-content" role="tabpanel" aria-labelledby="speed-tab-button" tabindex="0" aria-hidden="true">
+        <div class="tab-inner-bg">
+            <p class="tool-description">Measure your internet download and upload speeds using a nearby Cloudflare test server.</p>
+            <button class="submit-btn" id="btn-speed-test">Test internet speed</button>
+            <div id="speed-result" class="result-box" role="status" aria-live="polite" aria-atomic="true"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+{% endblock %}

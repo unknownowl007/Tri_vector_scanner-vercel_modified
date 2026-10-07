@@ -1,0 +1,8 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "functions": {
+    "app.py": {
+      "excludeFiles": "{tests/**,**/*.test.py,**/test_*.py,clean_data.py,merge_data.py,train_model.py,train_enhanced_model.py,features.py,newtrainigndta.csv,datasets/Training.csv,datasets/Testing.csv,datasets/cleaned_train.csv,datasets/cleaned_test.csv,datasets/features_train.csv,datasets/features_test.csv,datasets/newtrainigndta.csv,model/phishing_model.pkl,public/static/**}"
+    }
+  }
+}

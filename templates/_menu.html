@@ -1,0 +1,11 @@
+<div class="menu-container">
+    <button class="menu-toggle-btn" id="menu-toggle-btn" title="Toggle Menu" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+    </button>
+    <div class="dropdown-menu" id="dropdown-menu">
+        <a class="menu-item {% if request.endpoint == 'index' %}current{% endif %}" href="{{ url_for('index') }}">Home</a>
+        {% for p in nav_pages %}
+        <a class="menu-item {% if request.endpoint == p.endpoint %}current{% endif %}" href="{{ url_for(p.endpoint) }}">{{ p.label }}</a>
+        {% endfor %}
+    </div>
+</div>

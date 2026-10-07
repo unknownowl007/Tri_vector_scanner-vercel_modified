@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}How This Works | Phishing & URL Classifier{% endblock %}
+{% block card_class %}wide{% endblock %}
+{% block content %}
+<h2 class="page-title">How This Works</h2>
+<p class="page-lead">The app has three tools. Each one sends your input to the Flask server, which analyses it and returns a result.</p>
+
+<h3 class="section-title">1. URL Scanner</h3>
+<ol class="steps">
+    <li><strong>You enter a link.</strong> The browser sends it to the server.</li>
+    <li><strong>Features are extracted.</strong> The server turns the text of the link into 15 numbers, described below.</li>
+    <li><strong>The model decides.</strong> A trained Random Forest classifier votes across 300 decision trees and returns phishing or safe, with a confidence score.</li>
+</ol>
+
+<div class="info-card">
+    <h3>The 15 features</h3>
+    <ul>
+        <li>Total length, number of dots, hyphens, slashes and subdomains</li>
+        <li>Presence of <code>@</code>, <code>?</code>, underscores and percent signs</li>
+        <li>A second <code>//</code> inside the link, or an IP address instead of a domain name</li>
+        <li>Whether the link uses HTTPS, and the share of characters that are digits</li>
+        <li>Words like login, verify, secure or bank</li>
+        <li>Well-known brand names such as Google, PayPal or Microsoft</li>
+        <li>Endings like .php, .html, .aspx or .exe</li>
+    </ul>
+</div>
+
+<h3 class="section-title">2. Quishing Detector</h3>
+<ol class="steps">
+    <li><strong>You upload an image</strong> containing a QR code.</li>
+    <li><strong>OpenCV reads the code</strong> and extracts the link stored inside it.</li>
+    <li><strong>The same classifier runs</strong> on that link, so QR codes get the same protection as typed links.</li>
+</ol>
+
+<h3 class="section-title">3. Password Security</h3>
+<ol class="steps">
+    <li><strong>Strength is scored</strong> with zxcvbn, which looks for common words, patterns and keyboard runs rather than just counting characters.</li>
+    <li><strong>The breach check is private.</strong> Your password is hashed with SHA-1, and only the first 5 characters of the hash are sent to Have I Been Pwned. The full password never leaves the server.</li>
+    <li><strong>You get advice.</strong> The result shows a rating, a breach count, and suggestions for improving it.</li>
+</ol>
+
+<h3 class="section-title">Behind the scenes</h3>
+<div class="info-card">
+    <p>The model was trained on a labelled dataset of phishing and legitimate links, then saved with joblib. The Flask server loads it once at startup, so each scan takes a fraction of a second.</p>
+</div>
+{% endblock %}

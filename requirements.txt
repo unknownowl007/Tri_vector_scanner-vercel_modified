@@ -1,0 +1,9 @@
+Flask==3.0.3
+gunicorn==21.2.0
+scikit-learn
+joblib
+numpy
+opencv-python-headless
+Pillow
+requests
+zxcvbn
