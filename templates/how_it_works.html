@@ -3,25 +3,26 @@
 {% block card_class %}wide{% endblock %}
 {% block content %}
 <h2 class="page-title">How This Works</h2>
-<p class="page-lead">The app has three tools. Each one sends your input to the Flask server, which analyses it and returns a result.</p>
+<p class="page-lead">The app has six tools. Each one sends your input to the Flask server, which analyses it and returns a result. The one exception is the speed test, which runs between your browser and Cloudflare.</p>
 
 <h3 class="section-title">1. URL Scanner</h3>
 <ol class="steps">
     <li><strong>You enter a link.</strong> The browser sends it to the server.</li>
-    <li><strong>Features are extracted.</strong> The server turns the text of the link into 15 numbers, described below.</li>
-    <li><strong>The model decides.</strong> A trained Random Forest classifier votes across 300 decision trees and returns phishing or safe, with a confidence score.</li>
+    <li><strong>Features are extracted.</strong> The server turns the text of the link into 35 numbers, described below.</li>
+    <li><strong>The model decides.</strong> A trained Random Forest classifier votes across 300 decision trees and returns "phishing detected" or "model did not detect phishing", with a confidence score.</li>
+    <li><strong>The result is explained.</strong> The five signals that moved the score most are listed, each marked as raising or lowering the phishing score. You can download the result as a JSON report.</li>
+    <li><strong>Extra context is shown.</strong> If the link also appears in the project's local list of known phishing links, that is shown as background only. The model decides the verdict.</li>
 </ol>
 
 <div class="info-card">
-    <h3>The 15 features</h3>
+    <h3>The 35 features</h3>
     <ul>
-        <li>Total length, number of dots, hyphens, slashes and subdomains</li>
-        <li>Presence of <code>@</code>, <code>?</code>, underscores and percent signs</li>
-        <li>A second <code>//</code> inside the link, or an IP address instead of a domain name</li>
-        <li>Whether the link uses HTTPS, and the share of characters that are digits</li>
-        <li>Words like login, verify, secure or bank</li>
-        <li>Well-known brand names such as Google, PayPal or Microsoft</li>
-        <li>Endings like .php, .html, .aspx or .exe</li>
+        <li><strong>Size:</strong> length of the whole link, host name, path and query</li>
+        <li><strong>Punctuation:</strong> dots, hyphens, <code>@</code>, <code>?</code>, <code>=</code>, <code>&amp;</code>, colons, underscores, encoded characters and slashes in the path</li>
+        <li><strong>Host:</strong> number of subdomains, an IP address instead of a name, an unusual port, user details before the host, an international (punycode) name, and risky endings such as .top or .tk</li>
+        <li><strong>Characters:</strong> share of digits, longest run of digits, and how random the host name and link look (entropy)</li>
+        <li><strong>Words:</strong> words like login, verify, secure or bank, well-known brand names in the host, and link shorteners such as bit.ly</li>
+        <li><strong>Path and file:</strong> path depth, number of query parameters, fragments, a double slash in the path, and risky endings like .php, .html, .exe or .zip</li>
     </ul>
 </div>
 
@@ -29,18 +30,49 @@
 <ol class="steps">
     <li><strong>You upload an image</strong> containing a QR code.</li>
     <li><strong>OpenCV reads the code</strong> and extracts the link stored inside it.</li>
-    <li><strong>The same classifier runs</strong> on that link, so QR codes get the same protection as typed links.</li>
+    <li><strong>The same classifier runs</strong> on that link, so QR codes get the same checks as typed links.</li>
 </ol>
 
 <h3 class="section-title">3. Password Security</h3>
 <ol class="steps">
-    <li><strong>Strength is scored</strong> with zxcvbn, which looks for common words, patterns and keyboard runs rather than just counting characters.</li>
-    <li><strong>The breach check is private.</strong> Your password is hashed with SHA-1, and only the first 5 characters of the hash are sent to Have I Been Pwned. The full password never leaves the server.</li>
-    <li><strong>You get advice.</strong> The result shows a rating, a breach count, and suggestions for improving it.</li>
+    <li><strong>Strength is scored</strong> from 0 to 4 with zxcvbn, which looks for common words, patterns and keyboard runs rather than just counting characters.</li>
+    <li><strong>The breach check is private.</strong> The password is hashed with SHA-1, and only the first 5 characters of the hash are sent to Have I Been Pwned. The password itself is never sent to that service.</li>
+    <li><strong>You get advice.</strong> The result shows a warning, suggestions and the number of times the password appears in known breaches.</li>
 </ol>
+
+<h3 class="section-title">4. Enhanced URL</h3>
+<ol class="steps">
+    <li><strong>You enter a link</strong> in the Enhanced URL tab.</li>
+    <li><strong>The 35-signal model runs</strong> on it, using the same features as above.</li>
+    <li><strong>You see the verdict,</strong> the confidence, the number of signals analysed, the strongest signals, and a JSON report you can download.</li>
+</ol>
+
+<h3 class="section-title">5. Domain Tools</h3>
+<ol class="steps">
+    <li><strong>Validate SSL.</strong> The server connects to the site's secure port and reports whether its certificate is valid, who issued it, and when it expires.</li>
+    <li><strong>WHOIS / RDAP.</strong> The server looks up public registration details, such as the registrar and the dates, through the RDAP registry service.</li>
+    <li><strong>Analyze redirect chain.</strong> From the URL Scanner tab, the server follows up to 8 redirects and lists each step, so you can see where a short link really goes.</li>
+    <li><strong>Check lookalike domain.</strong> The domain is compared with ten well-known brands to catch tricks like <code>paypa1.com</code>.</li>
+    <li><strong>IP lookup.</strong> You can enter a public IP address to see its approximate location and network details. The address is sent to ipwho.is.</li>
+</ol>
+<div class="info-card">
+    <p>These tools only contact public internet addresses. Private and local addresses are refused, so the tool cannot be used to probe internal networks.</p>
+</div>
+
+<h3 class="section-title">6. Speed Test</h3>
+<ol class="steps">
+    <li><strong>Your browser downloads 10 MB</strong> of test data from Cloudflare and times it.</li>
+    <li><strong>Your browser uploads 5 MB</strong> and times that too.</li>
+    <li><strong>The result is shown in Mbps.</strong> It measures your own connection, not the connection to this site.</li>
+</ol>
+
+<h3 class="section-title">Scan history</h3>
+<div class="info-card">
+    <p>The last 50 successful checks (URL, enhanced, QR, redirect, lookalike, SSL, WHOIS and IP lookups) are saved only in your own browser, so you can review them on the Scan History page. The server keeps no record, and you can clear the history at any time.</p>
+</div>
 
 <h3 class="section-title">Behind the scenes</h3>
 <div class="info-card">
-    <p>The model was trained on a labelled dataset of phishing and legitimate links, then saved with joblib. The Flask server loads it once at startup, so each scan takes a fraction of a second.</p>
+    <p>The model was trained on a labelled dataset of phishing and legitimate links, then saved with joblib. The Flask server loads it once when it starts, so each scan takes a fraction of a second. The app runs on Vercel and is published from its GitHub repository.</p>
 </div>
 {% endblock %}

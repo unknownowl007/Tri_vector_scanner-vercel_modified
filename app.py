@@ -113,17 +113,18 @@ def decode_qr(image_bytes):
 def check_pwned(password):
     sha1_pwd = hashlib.sha1(password.encode('utf-8')).hexdigest().upper()
     prefix, suffix = sha1_pwd[:5], sha1_pwd[5:]
-    
+
     try:
         res = requests.get(f"https://api.pwnedpasswords.com/range/{prefix}", timeout=5)
-        if res.status_code == 200:
-            for line in res.text.splitlines():
-                h, count = line.split(':')
-                if h == suffix:
-                    return int(count)
+        if res.status_code != 200:
+            return None 
+        for line in res.text.splitlines():
+            h, count = line.split(':')
+            if h == suffix:
+                return int(count)
+        return 0  # checked successfully, not found in any breach
     except requests.RequestException:
-        pass
-    return 0
+        return None  
 
 # Application routes.
 @app.route("/", methods=["GET"])

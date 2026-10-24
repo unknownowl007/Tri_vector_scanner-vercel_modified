@@ -5,23 +5,47 @@
 <h2 class="page-title">Limitations</h2>
 <p class="page-lead">No detector is perfect. Knowing where this one can be wrong helps you use it sensibly.</p>
 
-<h3 class="section-title">URL Scanner</h3>
+<h3 class="section-title">URL Scanner and Enhanced URL</h3>
 <div class="card-grid">
     <div class="info-card"><h3>Looks at text only</h3><p>It judges the shape of the link, not the page behind it. It never opens the site or checks what it contains.</p></div>
-    <div class="info-card"><h3>New attacks can slip through</h3><p>A brand-new phishing site with a clean-looking link can be marked safe. Safe legitimate links with odd structure can be flagged by mistake.</p></div>
-    <div class="info-card"><h3>Depends on its training data</h3><p>The model is only as good as the examples it learned from, and phishing styles change over time.</p></div>
+    <div class="info-card"><h3>About 86% accurate</h3><p>On the test set the model was right about 86% of the time. Roughly one link in seven can be judged wrongly.</p></div>
+    <div class="info-card"><h3>New attacks can slip through</h3><p>A brand-new phishing site with a short, clean-looking link can be marked "not detected". Safe links with odd structure can be flagged by mistake.</p></div>
+    <div class="info-card"><h3>The confidence is not a probability</h3><p>A score of 80% does not mean 80% of such links are phishing. Treat it as a rough signal, not a guarantee.</p></div>
+    <div class="info-card"><h3>Known-link list is historical</h3><p>A match in the local list comes from an old dataset, not a live reputation check. A link missing from the list is not proven safe.</p></div>
+    <div class="info-card"><h3>Depends on its training data</h3><p>The model learned from one public dataset. Phishing styles change over time, so accuracy falls unless it is retrained.</p></div>
 </div>
 
 <h3 class="section-title">Quishing Detector</h3>
 <div class="card-grid">
-    <div class="info-card"><h3>Needs a clear image</h3><p>Blurry, cropped, tilted or low-contrast photos may not decode.</p></div>
-    <div class="info-card"><h3>Only links are checked</h3><p>If a QR code contains plain text, a contact card or Wi-Fi details, there is no link to scan.</p></div>
+    <div class="info-card"><h3>Needs a clear image</h3><p>Blurry, cropped, tilted or low-contrast photos may not decode. You must upload a picture; there is no live camera scanning.</p></div>
+    <div class="info-card"><h3>Only links are meaningful</h3><p>If a QR code contains plain text, a contact card or Wi-Fi details, there is no link to scan, yet the text is still passed to the classifier.</p></div>
 </div>
 
 <h3 class="section-title">Password Checker</h3>
 <div class="card-grid">
-    <div class="info-card"><h3>Needs internet access</h3><p>The breach lookup calls an outside service. If it is unreachable, the result shows no leaks even though none were actually checked.</p></div>
+    <div class="info-card"><h3>Needs internet access</h3><p>The breach lookup calls an outside service. If it cannot be reached, the page says the breach check is unavailable, and the strength rating is still shown.</p></div>
     <div class="info-card"><h3>"Not found" is not "safe"</h3><p>A password missing from known breaches can still be weak or guessable.</p></div>
+    <div class="info-card"><h3>Do not enter a password you use</h3><p>The password is sent to this application before it is checked. Use a throw-away example instead.</p></div>
+</div>
+
+<h3 class="section-title">Domain Tools</h3>
+<div class="card-grid">
+    <div class="info-card"><h3>Depend on outside services</h3><p>Certificate, registration, redirect and IP lookups rely on DNS, registries and third parties that can be slow, unavailable, or hide data.</p></div>
+    <div class="info-card"><h3>Lookalike list is short</h3><p>Only ten brands are compared. Names joined with hyphens, such as <code>paypa1-secure-login</code>, and digit-for-letter swaps inside longer names can be missed.</p></div>
+    <div class="info-card"><h3>A valid certificate is not proof</h3><p>Many phishing sites also have valid HTTPS certificates. A redirect chain or registration date is a clue, not a verdict.</p></div>
+    <div class="info-card"><h3>Redirect check is limited</h3><p>It follows at most 8 redirects, reads only the response headers, and only supports standard web ports. It cannot see redirects done by scripts inside a page.</p></div>
+    <div class="info-card"><h3>IP location is approximate</h3><p>The country and city come from a free service and can be wrong. The lookup works only for public addresses.</p></div>
+</div>
+
+<h3 class="section-title">Speed Test</h3>
+<div class="card-grid">
+    <div class="info-card"><h3>One quick measurement</h3><p>It uses a single download and upload against one Cloudflare server, so results vary from run to run.</p></div>
+</div>
+
+<h3 class="section-title">The project itself</h3>
+<div class="card-grid">
+    <div class="info-card"><h3>A prototype</h3><p>It has no rate limit, user accounts or request-size policy, so it is not ready for heavy public use without more safeguards.</p></div>
+    <div class="info-card"><h3>History stays in your browser</h3><p>Scan history is saved only on your own device, limited to the last 50 checks, and is lost if you clear your browser data.</p></div>
 </div>
 
 <div class="note">Use this tool as a second opinion. When a link or message feels wrong, go to the official website directly instead of clicking.</div>

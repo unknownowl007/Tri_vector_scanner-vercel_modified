@@ -380,9 +380,14 @@ function renderPasswordResults(box, data) {
     const colors = ["#ef4444", "#f97316", "#eab308", "#22c55e", "#10b981"]; 
     const fillWidth = (data.score + 1) * 20;
 
-    const breachText = data.breach_count > 0 
-        ? `<span style="color: #fca5a5; font-weight: bold;">⚠️ Leaked in ${data.breach_count.toLocaleString()} data breaches</span>`
-        : `<span style="color: #86efac; font-weight: bold;">🛡️ No known leaks detected</span>`;
+        let breachText;
+    if (data.breach_count === null || data.breach_count === undefined) {
+        breachText = `<span style="color: #fcd34d; font-weight: bold;">⚠️ Breach check unavailable. Try again later.</span>`;
+    } else if (data.breach_count > 0) {
+        breachText = `<span style="color: #fca5a5; font-weight: bold;">⚠️ Leaked in ${data.breach_count.toLocaleString()} data breaches</span>`;
+    } else {
+        breachText = `<span style="color: #86efac; font-weight: bold;">🛡️ No known leaks detected</span>`;
+    }
 
     const suggestions = data.suggestions.length > 0 
         ? "<ul>" + data.suggestions.map(s => `<li>${s}</li>`).join('') + "</ul>" 
