@@ -91,13 +91,25 @@ def classify_url(url):
             "note": "Detailed feature explanations are available with the enhanced model.",
         }
     )
+
+    try:
+        lookalike = check_lookalike_domain(url)
+    except ValueError:
+        lookalike = None  # e.g. IP address or unparseable host
+
+    is_phishing = bool(prediction == 1)
+    if lookalike and lookalike["suspicious"] and not is_phishing:
+        is_phishing = True
+        confidence = float(lookalike["matches"][0]["similarity"])
+
     return {
         "url": url,
-        "is_phishing": bool(prediction == 1),
+        "is_phishing": is_phishing,
         "confidence": confidence,
         "model": "enhanced" if active_model is enhanced_model else "legacy",
         "explanation": explanation,
         "known_phishing": check_known_phishing_url(url, known_phishing_urls),
+        "lookalike": lookalike,
     }
 
 def decode_qr(image_bytes):
@@ -133,8 +145,8 @@ def index():
 
 @app.route("/api/scan/url", methods=["POST"])
 def api_scan_url():
-    payload = request.get_json() or {}
-    url = payload.get("url", "").strip()
+    payload = request.get_json(silent=True)
+    url = payload.get("url", "").strip() if isinstance(payload, dict) and isinstance(payload.get("url"), str) else ""
     
     if not url:
         return jsonify({"status": "error", "message": "Missing URL payload."}), 400
@@ -158,8 +170,8 @@ def api_scan_qr():
 
 @app.route("/api/check/password", methods=["POST"])
 def api_check_password():
-    payload = request.get_json() or {}
-    pwd = payload.get("password", "")
+    payload = request.get_json(silent=True)
+    pwd = payload.get("password", "") if isinstance(payload, dict) and isinstance(payload.get("password"), str) else ""
     
     if not pwd:
         return jsonify({"status": "error", "message": "Missing password payload."}), 400
@@ -222,30 +234,16 @@ def inject_nav():
 @app.route("/api/scan/url/enhanced", methods=["POST"])
 def api_scan_url_enhanced():
     payload = request.get_json(silent=True)
-    url = payload.get("url", "").strip() if isinstance(payload, dict) else ""
+    url = payload.get("url", "").strip() if isinstance(payload, dict) and isinstance(payload.get("url"), str) else ""
     if not url:
         return jsonify({"status": "error", "message": "Missing URL payload."}), 400
     if enhanced_model is None:
         return jsonify({"status": "error", "message": "Enhanced classification engine is offline."}), 503
 
-    features = [extract_enhanced_features(url)]
-    prediction = enhanced_model.predict(features)[0]
-    probabilities = enhanced_model.predict_proba(features)[0]
-    confidence = round(
-        (probabilities[1] if prediction == 1 else probabilities[0]) * 100,
-        2,
-    )
-    return jsonify({
-        "status": "success",
-        "data": {
-            "url": url,
-            "is_phishing": bool(prediction == 1),
-            "confidence": confidence,
-            "feature_count": len(features[0]),
-            "explanation": explain_random_forest(enhanced_model, features),
-            "known_phishing": check_known_phishing_url(url, known_phishing_urls),
-        },
-    })
+    # classify_url uses the enhanced model whenever it is loaded, so results match the old behavior.
+    data = classify_url(url)
+    data["feature_count"] = len(extract_enhanced_features(url))
+    return jsonify({"status": "success", "data": data})
 
 
 @app.route("/api/analyze/redirects", methods=["POST"])

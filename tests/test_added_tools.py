@@ -153,6 +153,12 @@ class AddedToolTests(unittest.TestCase):
         self.assertEqual(result["matches"][0]["brand"], "paypal")
         self.assertFalse(check_lookalike_domain("https://www.google.com")["suspicious"])
 
+    def test_brand_lookalike_check_flags_zero_for_o_substitution(self):
+        result = check_lookalike_domain("https://www.faceb00k.com")
+        self.assertTrue(result["suspicious"])
+        self.assertEqual(result["matches"][0]["brand"], "facebook")
+        self.assertEqual(result["matches"][0]["lookalike_label"], "faceb00k")
+
     def test_lookalike_api_validates_and_returns_match_details(self):
         response = self.client.post("/api/analyze/lookalike", json={"domain": "paypa1.com"})
         self.assertEqual(response.status_code, 200)
